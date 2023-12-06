@@ -1,4 +1,4 @@
-
+import re
 word_to_num_map = {
     'one': 1,
     'two': 2,
@@ -23,15 +23,24 @@ def get_input():
         bad_values = data.split('\n')
         return bad_values
     
-def clean_input(bad_values):
-    start = 0
-    for value in bad_values:
-        for word in word_list:
-            if word in value: 
-                start = value.find(word)
-                end = start + len(word)
-                new_value = value[0:start] + str(word_to_num(word)) + value[end:]
-                print(new_value)
+# def clean_input(bad_values):
+#     start = 0
+#     for value in bad_values:
+        
+            # start = value.find(word)
+            # end = start + len(word)
+            # new_value = value[0:start] + str(word_to_num(word)) + value[end:]
+            # print(new_value)
+
+def translate(v: str) -> str:
+    return v if v.isdigit() else str(word_list.index(v)+1)
+
+def part2(lines: list[str]):
+    result = 0
+    for line in lines:
+        nums = re.findall(r'(?=(one|two|three|four|five|six|seven|eight|nine|\d))', line)
+        result += int(translate(nums[0]) + translate(nums[-1]))
+    print('part 2:', result)
 
 def get_result(bad_values):
     result = 0
@@ -50,5 +59,5 @@ def get_result(bad_values):
 
 if __name__=='__main__':
     bad_values = get_input()
-    clean_values = clean_input(bad_values)
+    part2(bad_values)
     # print(get_result(clean_values))
